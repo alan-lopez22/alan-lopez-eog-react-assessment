@@ -1,13 +1,10 @@
 import { createSlice, PayloadAction } from 'redux-starter-kit';
+import { ApiErrorAction } from '../../common/api-error-action';
 
 export type WeatherForLocation = {
   description: string;
   locationName: string;
   temperatureinCelsius: number;
-};
-
-export type ApiErrorAction = {
-  error: string;
 };
 
 const initialState = {
