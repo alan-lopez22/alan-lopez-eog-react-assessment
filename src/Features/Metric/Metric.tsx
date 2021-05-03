@@ -14,51 +14,51 @@ const query = `
 `;
 
 const getMetrics = (state: IState) => {
-    const { metrics } = state.metric;
+  const { metrics } = state.metric;
 
-    return metrics;
-}
+  return metrics;
+};
 
 const getSelectedMetrics = (state: IState) => {
-    const { selectedMetric } = state.metric;
+  const { selectedMetric } = state.metric;
 
-    return selectedMetric;
-}
+  return selectedMetric;
+};
 
 export default () => {
-    return (
-      <Provider value={client}>
-        <Metric />
-      </Provider>
-    );
+  return (
+    <Provider value={client}>
+      <Metric />
+    </Provider>
+  );
 };
-  
+
 const Metric = () => {
-    const dispatch = useDispatch();
-    const metrics = useSelector(getMetrics);
-    const selectedMetrics = useSelector(getSelectedMetrics);
+  const dispatch = useDispatch();
+  const metrics = useSelector(getMetrics);
+  const selectedMetrics = useSelector(getSelectedMetrics);
 
-    const handleChange = (value: any) => {
-        dispatch(actions.updateSelectedMetric(value));
-    };
+  const handleChange = (value: any) => {
+    dispatch(actions.updateSelectedMetric(value));
+  };
 
-    const [ result ] = useQuery({
-        query
-    });
-    const { fetching, data, error } = result;
+  const [result] = useQuery({
+    query,
+  });
+  const { fetching, data, error } = result;
 
-    useEffect(() => {
-        if (error) {
-            dispatch(actions.metricApiErrorReceived({ error: error.message }));
-            return;
-        }
+  useEffect(() => {
+    if (error) {
+      dispatch(actions.metricApiErrorReceived({ error: error.message }));
+      return;
+    }
 
-        if (!data) return;
-        const { getMetrics } = data;
-        dispatch(actions.metricDataReceived(getMetrics));
-    }, [dispatch, data, error]);
-    
-    if (fetching) return <LinearProgress />;
+    if (!data) return;
+    const { getMetrics } = data;
+    dispatch(actions.metricDataReceived(getMetrics));
+  }, [dispatch, data, error]);
 
-    return <MultiSelect items={metrics} selectedItems={selectedMetrics} onSelectedItems={handleChange} />
+  if (fetching) return <LinearProgress />;
+
+  return <MultiSelect items={metrics} selectedItems={selectedMetrics} onSelectedItems={handleChange} />;
 };
